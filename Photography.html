@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saed Govar - Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0D0D0D;
+            color: #0D0D0D;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #0D0D0D;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #667eea;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 8rem 0 5rem 0;
+            background: #0D0D0D;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Image Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid #333;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            border-color: #667eea;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 0.2;
+        }
+
+        .gallery-placeholder {
+            text-align: center;
+            color: #ccc;
+            font-size: 1.1rem;
+        }
+
+        .gallery-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .upload-area:hover {
+            background: linear-gradient(135deg, #333, #2a2a2a);
+            border-color: #764ba2;
+        }
+
+        .upload-area h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Custom Icons (using Unicode) */
+        .icon-image::before { content: "🖼️"; }
+        .icon-camera::before { content: "📷"; }
+        .icon-design::before { content: "🎨"; }
+        .icon-code::before { content: "💻"; }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">Saed Govar</div>
+            <nav class="nav">
+             </nav>
+        </div>
+    </header>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>My Portfolio</h2>
+            </div>
+
+            <div class="gallery">
+                <!-- Upload Area -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <!-- Sample Portfolio Items -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-camera"></span>
+                        <div>Photography Collection</div>
+                        <small>Portrait & Landscape</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-code"></span>
+                        <div>Web Development</div>
+                        <small>Modern & Responsive</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-image"></span>
+                        <div>Digital Art</div>
+                        <small>Illustrations & Graphics</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>UI/UX Design</div>
+                        <small>User Experience Focus</small>
+                    </div>
+                </div>
+            </div>
+              <div class="gallery">
+                <!-- Upload Area -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <!-- Sample Portfolio Items -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-camera"></span>
+                        <div>Photography Collection</div>
+                        <small>Portrait & Landscape</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-code"></span>
+                        <div>Web Development</div>
+                        <small>Modern & Responsive</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-image"></span>
+                        <div>Digital Art</div>
+                        <small>Illustrations & Graphics</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>UI/UX Design</div>
+                        <small>User Experience Focus</small>
+                    </div>
+                </div>
+            </div>
+   <div class="gallery">
+                <!-- Upload Area -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <!-- Sample Portfolio Items -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-camera"></span>
+                        <div>Photography Collection</div>
+                        <small>Portrait & Landscape</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-code"></span>
+                        <div>Web Development</div>
+                        <small>Modern & Responsive</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-image"></span>
+                        <div>Digital Art</div>
+                        <small>Illustrations & Graphics</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>UI/UX Design</div>
+                        <small>User Experience Focus</small>
+                    </div>
+                </div>
+            </div>
+               <div class="gallery">
+                <!-- Upload Area -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <!-- Sample Portfolio Items -->
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>Creative Design Project</div>
+                        <small>Visual Identity & Branding</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-camera"></span>
+                        <div>Photography Collection</div>
+                        <small>Portrait & Landscape</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-code"></span>
+                        <div>Web Development</div>
+                        <small>Modern & Responsive</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-image"></span>
+                        <div>Digital Art</div>
+                        <small>Illustrations & Graphics</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item">
+                    <div class="gallery-placeholder">
+                        <span class="icon-design"></span>
+                        <div>UI/UX Design</div>
+                        <small>User Experience Focus</small>
+                    </div>
+                </div>
+            </div>
+
+
+         </div>
+    </section>
+
+    <!-- Footer -->
+    
+
+    <script>
+        // Set current year
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Handle image upload
+        function handleImageUpload(event) {
+            const files = event.target.files;
+            const gallery = document.querySelector('.gallery');
+            
+            for (let file of files) {
+                if (file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        const galleryItem = document.createElement('div');
+                        galleryItem.className = 'gallery-item';
+                        galleryItem.innerHTML = `
+                            <img src="${e.target.result}" alt="Portfolio Image" 
+                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
+                        `;
+                        gallery.appendChild(galleryItem);
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+        }
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = '#0D0D0D';
+                header.style.boxShadow = '0 2px 20px #0D0D0D';
+            } else {
+                header.style.background = '#0D0D0D';
+                header.style.boxShadow = 'none';
+            }
+        });
+    </script>
+</body>
+</html>

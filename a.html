@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Image Demo Methods</title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+        }
+
+        .demo-button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.3s ease;
+        }
+
+        .demo-button:hover {
+            transform: scale(1.05);
+        }
+
+        /* Modal Background */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 20px;
+            padding: 20px;
+            max-width: 900px;
+            width: 100%;
+            max-height: 95vh;
+            overflow-y: auto;
+            position: relative;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from { opacity: 0; transform: scale(0.7); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            font-size: 20px;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .demo-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-right: 50px;
+        }
+
+        .demo-header h2 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .demo-preview {
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+            min-height: 300px;
+        }
+
+        /* Carousel/Slider Styles */
+        .carousel-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .carousel-wrapper {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #f8f9fa;
+        }
+
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0,0,0,0.5);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .carousel-prev { left: 10px; }
+        .carousel-next { right: 10px; }
+
+        .carousel-dots {
+            text-align: center;
+            padding: 10px;
+            background: #f8f9fa;
+        }
+
+        .carousel-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: #ccc;
+            margin: 0 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #667eea;
+        }
+
+        /* Grid Gallery Styles */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .gallery-item {
+            aspect-ratio: 1;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .gallery-item svg {
+            z-index: 2;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(0,0,0,0.1), rgba(0,0,0,0.3));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 1;
+        }
+
+        /* Tab System Styles */
+        .tab-container {
+            background: #f8f9fa;
+        }
+
+        .tab-buttons {
+            display: flex;
+            background: #e9ecef;
+            border-radius: 10px 10px 0 0;
+            overflow: hidden;
+        }
+
+        .tab-button {
+            flex: 1;
+            padding: 15px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            font-weight: bold;
+        }
+
+        .tab-button.active {
+            background: #667eea;
+            color: white;
+        }
+
+        .tab-content {
+            padding: 20px;
+            min-height: 200px;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Multi-View Layout */
+        .multi-view {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+            padding: 20px;
+            background: #f8f9fa;
+        }
+
+        .thumbnail-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .thumbnail {
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+            border: 3px solid transparent;
+        }
+
+        .thumbnail:hover, .thumbnail.active {
+            transform: scale(1.05);
+            border-color: #667eea;
+        }
+
+        .main-view {
+            aspect-ratio: 16/9;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        @media (max-width: 768px) {
+            .multi-view {
+                grid-template-columns: 1fr;
+            }
+            
+            .thumbnail-list {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 10px;
+            }
+            
+            .thumbnail {
+                min-width: 80px;
+            }
+            
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+                gap: 10px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>🖼️ Multi-Image Demo Methods</h1>
+    <p>مەتۆدی جیاواز بۆ پیشاندانی زۆر وێنە:</p>
+
+    <!-- Demo Buttons -->
+    <button class="demo-button" onclick="openDemo('carousel')">🎠 Carousel/Slider</button>
+    <button class="demo-button" onclick="openDemo('gallery')">🖼️ Grid Gallery</button>
+    <button class="demo-button" onclick="openDemo('tabs')">📂 Tab System</button>
+    <button class="demo-button" onclick="openDemo('multiview')">👁️ Multi-View</button>
+
+    <!-- Modal -->
+    <div id="modalOverlay" class="modal-overlay" onclick="closeDemo(event)">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <button class="close-btn" onclick="closeDemo()">&times;</button>
+            
+            <div class="demo-header">
+                <h2 id="demoTitle">Demo Title</h2>
+                <p id="demoDescription">Demo description</p>
+            </div>
+
+            <div class="demo-preview">
+                <div id="demoContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentCarouselSlide = 0;
+        let currentMainImage = 0;
+
+        const demoData = {
+            carousel: {
+                title: "Carousel/Slider Demo",
+                description: "وێنەکان بە شێوەی سلایدەر پیشان بدە",
+                content: `carousel`
+            },
+            gallery: {
+                title: "Grid Gallery Demo", 
+                description: "گەلەری گرید بۆ پیشاندانی زۆر وێنە",
+                content: `gallery`
+            },
+            tabs: {
+                title: "Tab System Demo",
+                description: "دابەشکردنی وێنەکان بە کاتێگۆری",
+                content: `tabs`
+            },
+            multiview: {
+                title: "Multi-View Demo",
+                description: "پیشاندانی وێنەی سەرەکی + تامنەیڵەکان",
+                content: `multiview`
+            }
+        };
+
+        // Sample images data (SVG icons)
+        const sampleImages = [
+            { bg: 'linear-gradient(45deg, #ff9a9e 0%, #fecfef 100%)', icon: 'camera' },
+            { bg: 'linear-gradient(45deg, #a8edea 0%, #fed6e3 100%)', icon: 'image' },
+            { bg: 'linear-gradient(45deg, #ffecd2 0%, #fcb69f 100%)', icon: 'video' },
+            { bg: 'linear-gradient(45deg, #c3cfe2 0%, #c3cfe2 100%)', icon: 'star' },
+            { bg: 'linear-gradient(45deg, #89f7fe 0%, #66a6ff 100%)', icon: 'heart' },
+            { bg: 'linear-gradient(45deg, #fdbb2d 0%, #22c1c3 100%)', icon: 'sun' },
+            { bg: 'linear-gradient(45deg, #667eea 0%, #764ba2 100%)', icon: 'moon' },
+            { bg: 'linear-gradient(45deg, #f093fb 0%, #f5576c 100%)', icon: 'flower' }
+        ];
+
+        const icons = {
+            camera: '<path d="M12 15.5A3.5 3.5 0 0 1 8.5 12A3.5 3.5 0 0 1 12 8.5A3.5 3.5 0 0 1 15.5 12A3.5 3.5 0 0 1 12 15.5M12 9A3 3 0 0 0 9 12A3 3 0 0 0 12 15A3 3 0 0 0 15 12A3 3 0 0 0 12 9M12 4.5C7.04 4.5 2.91 7.58 1.39 12C2.91 16.42 7.04 19.5 12 19.5S21.09 16.42 22.61 12C21.09 7.58 16.96 4.5 12 4.5Z"/>',
+            image: '<path d="M8.5,13.5L11,16.5L14.5,12L19,18H5M21,19V5C21,3.89 20.1,3 19,3H5A2,2 0 0,0 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19Z"/>',
+            video: '<path d="M17,10.5V7A1,1 0 0,0 16,6H4A1,1 0 0,0 3,7V17A1,1 0 0,0 4,18H16A1,1 0 0,0 17,17V13.5L21,17.5V6.5L17,10.5Z"/>',
+            star: '<path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.46,13.97L5.82,21L12,17.27Z"/>',
+            heart: '<path d="M12,21.35L10.55,20.03C5.4,15.36 2,12.27 2,8.5C2,5.41 4.42,3 7.5,3C9.24,3 10.91,3.81 12,5.08C13.09,3.81 14.76,3 16.5,3C19.58,3 22,5.41 22,8.5C22,12.27 18.6,15.36 13.45,20.03L12,21.35Z"/>',
+            sun: '<path d="M12,18A6,6 0 0,1 6,12A6,6 0 0,1 12,6A6,6 0 0,1 18,12A6,6 0 0,1 12,18M20,15.31L23.31,12L20,8.69V4H15.31L12,0.69L8.69,4H4V8.69L0.69,12L4,15.31V20H8.69L12,23.31L15.31,20H20V15.31Z"/>',
+            moon: '<path d="M17.75,4.09L15.22,6.03L16.13,9.09L13.5,7.28L10.87,9.09L11.78,6.03L9.25,4.09L12.44,4L13.5,1L14.56,4L17.75,4.09M21.25,11L19.61,12.25L20.2,14.23L18.5,13.06L16.8,14.23L17.39,12.25L15.75,11L17.81,10.95L18.5,9L19.19,10.95L21.25,11M22,2V4A10,10 0 0,1 12,14A10,10 0 0,1 2,4V2C2,3.11 2.9,4 4,4H20A2,2 0 0,0 22,2Z"/>',
+            flower: '<path d="M12,2A3,3 0 0,1 15,5C15,5.5 14.92,6 14.76,6.43C15.87,6.81 16.84,7.5 17.58,8.38C18,8 18.5,7.82 19,7.82A3,3 0 0,1 22,10.82C22,11.32 21.92,11.82 21.76,12.25C22.87,12.63 23.84,13.32 24.58,14.2V16.2C23.84,17.08 22.87,17.77 21.76,18.15C21.92,18.58 22,19.08 22,19.58A3,3 0 0,1 19,22.58C18.5,22.58 18,22.5 17.58,22.34C16.84,23.22 15.87,23.91 14.76,24.29C14.92,24.72 15,25.22 15,25.72A3,3 0 0,1 12,28.72A3,3 0 0,1 9,25.72C9,25.22 9.08,24.72 9.24,24.29C8.13,23.91 7.16,23.22 6.42,22.34C6,22.5 5.5,22.58 5,22.58A3,3 0 0,1 2,19.58C2,19.08 2.08,18.58 2.24,18.15C1.13,17.77 0.16,17.08 -0.58,16.2V14.2C0.16,13.32 1.13,12.63 2.24,12.25C2.08,11.82 2,11.32 2,10.82A3,3 0 0,1 5,7.82C5.5,7.82 6,8 6.42,8.38C7.16,7.5 8.13,6.81 9.24,6.43C9.08,6 9,5.5 9,5A3,3 0 0,1 12,2Z"/>'
+        };
+
+        function createCarousel() {
+            return `
+                <div class="carousel-container">
+                    <div class="carousel-wrapper" id="carouselWrapper">
+                        ${sampleImages.map((img, index) => `
+                            <div class="carousel-slide">
+                                <div style="width: 200px; height: 200px; background: ${img.bg}; border-radius: 20px; display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 35px rgba(0,0,0,0.2);">
+                                    <svg width="60" height="60" viewBox="0 0 24 24" fill="white">
+                                        ${icons[img.icon]}
+                                    </svg>
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <button class="carousel-nav carousel-prev" onclick="prevSlide()">‹</button>
+                    <button class="carousel-nav carousel-next" onclick="nextSlide()">›</button>
+                    <div class="carousel-dots">
+                        ${sampleImages.map((_, index) => `
+                            <span class="carousel-dot ${index === 0 ? 'active' : ''}" onclick="goToSlide(${index})"></span>
+                        `).join('')}
+                    </div>
+                </div>
+            `;
+        }
+
+        function createGallery() {
+            return `
+                <div class="gallery-grid">
+                    ${sampleImages.map((img, index) => `
+                        <div class="gallery-item" style="background: ${img.bg};" onclick="alert('وێنەی ${index + 1} کرایەوە')">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="white">
+                                ${icons[img.icon]}
+                            </svg>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function createTabs() {
+            const categories = {
+                'Photography': sampleImages.slice(0, 3),
+                'Videos': sampleImages.slice(3, 5),
+                'Graphics': sampleImages.slice(5, 8)
+            };
+            
+            return `
+                <div class="tab-container">
+                    <div class="tab-buttons">
+                        ${Object.keys(categories).map((cat, index) => `
+                            <button class="tab-button ${index === 0 ? 'active' : ''}" onclick="switchTab(${index})">${cat}</button>
+                        `).join('')}
+                    </div>
+                    ${Object.values(categories).map((images, index) => `
+                        <div class="tab-panel ${index === 0 ? 'active' : ''}" id="tab${index}">
+                            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px;">
+                                ${images.map(img => `
+                                    <div style="aspect-ratio: 1; background: ${img.bg}; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer;" onclick="alert('وێنە کرایەوە')">
+                                        <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                                            ${icons[img.icon]}
+                                        </svg>
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+        }
+
+        function createMultiView() {
+            return `
+                <div class="multi-view">
+                    <div class="thumbnail-list">
+                        ${sampleImages.slice(0, 4).map((img, index) => `
+                            <div class="thumbnail ${index === 0 ? 'active' : ''}" style="background: ${img.bg};" onclick="showMainImage(${index})">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="white">
+                                    ${icons[img.icon]}
+                                </svg>
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="main-view" id="mainView" style="background: ${sampleImages[0].bg};">
+                        <svg width="80" height="80" viewBox="0 0 24 24" fill="white">
+                            ${icons[sampleImages[0].icon]}
+                        </svg>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openDemo(demoType) {
+            const demo = demoData[demoType];
+            document.getElementById('demoTitle').textContent = demo.title;
+            document.getElementById('demoDescription').textContent = demo.description;
+            
+            let content = '';
+            switch(demoType) {
+                case 'carousel': content = createCarousel(); break;
+                case 'gallery': content = createGallery(); break;
+                case 'tabs': content = createTabs(); break;
+                case 'multiview': content = createMultiView(); break;
+            }
+            
+            document.getElementById('demoContent').innerHTML = content;
+            document.getElementById('modalOverlay').style.display = 'flex';
+            document.body.style.overflow = 'hidden';
+            
+            currentCarouselSlide = 0;
+            currentMainImage = 0;
+        }
+
+        function closeDemo(event) {
+            if (event && event.target !== event.currentTarget && !event.target.classList.contains('close-btn')) return;
+            document.getElementById('modalOverlay').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Carousel functions
+        function nextSlide() {
+            currentCarouselSlide = (currentCarouselSlide + 1) % sampleImages.length;
+            updateCarousel();
+        }
+
+        function prevSlide() {
+            currentCarouselSlide = (currentCarouselSlide - 1 + sampleImages.length) % sampleImages.length;
+            updateCarousel();
+        }
+
+        function goToSlide(index) {
+            currentCarouselSlide = index;
+            updateCarousel();
+        }
+
+        function updateCarousel() {
+            const wrapper = document.getElementById('carouselWrapper');
+            if (wrapper) {
+                wrapper.style.transform = `translateX(-${currentCarouselSlide * 100}%)`;
+                document.querySelectorAll('.carousel-dot').forEach((dot, index) => {
+                    dot.classList.toggle('active', index === currentCarouselSlide);
+                });
+            }
+        }
+
+        // Tab functions
+        function switchTab(index) {
+            document.querySelectorAll('.tab-button').forEach((btn, i) => {
+                btn.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.tab-panel').forEach((panel, i) => {
+                panel.classList.toggle('active', i === index);
+            });
+        }
+
+        // Multi-view functions
+        function showMainImage(index) {
+            currentMainImage = index;
+            const mainView = document.getElementById('mainView');
+            const img = sampleImages[index];
+            
+            document.querySelectorAll('.thumbnail').forEach((thumb, i) => {
+                thumb.classList.toggle('active', i === index);
+            });
+            
+            if (mainView) {
+                mainView.style.background = img.bg;
+                mainView.innerHTML = `
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="white">
+                                                                                    <img src="./assets/images/Photography/1.jpg" alt="">
+
+                    </svg>
+                `;
+            }
+        }
+
+        // Close with Escape
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') closeDemo();
+        });
+    </script>
+
+</body>
+</html>
