@@ -991,3 +991,224 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-slide');
+
+        // Carousel Functions
+        function openCarouselModal() {
+            document.getElementById('carouselModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCarouselModal() {
+            document.getElementById('carouselModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showSlide(index) {
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[index].classList.add('active');
+        }
+
+        function nextSlide() {
+            currentSlide = (currentSlide + 1) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        function prevSlide() {
+            currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+            showSlide(currentSlide);
+        }
+
+        // Grid Modal Functions
+        function openGridModal() {
+            document.getElementById('gridModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+           function openGridModal1() {
+            document.getElementById('gridModal1').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+ function openGridModal2() {
+            document.getElementById('gridModal2').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+
+
+         function openGridModal3() {
+            document.getElementById('gridModal3').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+
+
+
+
+
+
+
+
+
+        function closeGridModal() {
+            document.getElementById('gridModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+            function closeGridModal1() {
+            document.getElementById('gridModal1').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+
+  function closeGridModal2() {
+            document.getElementById('gridModal2').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+
+
+          function closeGridModal3() {
+            document.getElementById('gridModal3').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+
+
+
+
+
+        // Tab Modal Functions
+        function openTabModal() {
+            document.getElementById('tabModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeTabModal() {
+            document.getElementById('tabModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showTab(tabName) {
+            // Hide all tab contents
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tab buttons
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Show selected tab content
+            document.getElementById(tabName).classList.add('active');
+            
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Multi View Modal Functions
+        function openMultiModal() {
+            document.getElementById('multiModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMultiModal() {
+            document.getElementById('multiModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        // Image Modal Functions
+        function openImageModal(src, title) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            const imageTitle = document.getElementById('imageTitle');
+            
+            modalImage.src = src;
+            imageTitle.textContent = title;
+            modal.style.display = 'block';
+        }
+
+        function closeImageModal() {
+            document.getElementById('imageModal').style.display = 'none';
+        }
+
+        // Close modals when clicking outside
+        window.onclick = function(event) {
+            const modals = ['carouselModal', 'gridModal','gridModal1','gridModal2','gridModal3', 'tabModal', 'multiModal', 'imageModal'];
+            modals.forEach(modalId => {
+                const modal = document.getElementById(modalId);
+                if (event.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+        }
+
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const modals = ['carouselModal', 'gridModal','gridModal1','gridModal2','gridModal3', 'tabModal', 'multiModal', 'imageModal'];
+                modals.forEach(modalId => {
+                    document.getElementById(modalId).style.display = 'none';
+                });
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Carousel navigation
+            if (document.getElementById('carouselModal').style.display === 'block') {
+                if (e.key === 'ArrowRight') nextSlide();
+                if (e.key === 'ArrowLeft') prevSlide();
+            }
+        });
+
+        // Auto-play carousel (optional)
+        let autoPlay = setInterval(() => {
+            if (document.getElementById('carouselModal').style.display === 'block') {
+                nextSlide();
+            }
+        }, 5000);
+
+        // Add entrance animation
+        window.addEventListener('load', function() {
+            const buttons = document.querySelectorAll('.demo-btn');
+            buttons.forEach((btn, index) => {
+                btn.style.opacity = '0';
+                btn.style.transform = 'translateY(30px)';
+                btn.style.transition = 'all 0.6s cubic-bezier(0.165, 0.84, 0.44, 1)';
+                
+                setTimeout(() => {
+                    btn.style.opacity = '1';
+                    btn.style.transform = 'translateY(0)';
+                }, index * 150 + 300);
+            });
+        });
