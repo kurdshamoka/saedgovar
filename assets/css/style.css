@@ -58,7 +58,7 @@
 /*----Default Css----*/
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 :root {
-  --color-page: #010A10;
+  --color-page: #0d0d0d;
   --color-primary: #424b52;
   --color-primary-alt: #13fdfd;
   --color-primary-2nd: #FF494A;
@@ -67,7 +67,7 @@
   --color-secondary: #010a10;
   --color-white:#ffffff;
   --color-gray: #bebebe;
-  --color-gray-2: #06131b;
+  --color-gray-2: #a8a8a8;
   --color-subtitle: #f9004d;
   --stroke-dark-100: #081722;
   --background-color-1: #24243557;
@@ -82,14 +82,14 @@
   --gradient-two: linear-gradient(to right, #ED145B, #4A11EB);
   --gradient-three: linear-gradient(to right, #03041c, #0612b3);
   --text-gradient-one:linear-gradient(to right, #E42032, #4A11EB);
-  --stroke-gr: linear-gradient(317deg, #13fdfd 0%, rgba(19, 215, 253, 0.2) 38.23%, rgba(19, 191, 253, 0.2) 62.96%, #139bfd 100%);
+  --stroke-gr: linear-gradient(317deg, #dcdcdc 0%, #dcdcdc, rgb(211, 211, 211) 62.96%, #4d3d3d 100%);
   --stroke-gradient-2: radial-gradient(92.46% 222.14% at 15.65% -7.58%, rgba(127, 226, 251, 0.20) 0%, rgba(127, 226, 251, 0.02) 100%);
   --icon-gradient: linear-gradient(315deg, #13fdfd 0%, #139bfd 100%);
   --gradient-none: linear-gradient(red 0 0);
   --full: linear-gradient(red 0 0);
   --shadow-1: 0 2px 22px #13fdfd7d;
-  --theme-gradient: linear-gradient(312deg, #13fdfd 0%, #139bfd 100%);
-  --color-heading:#ffffff;
+  --theme-gradient: linear-gradient(312deg, #3f3f3f 0%, #a8a8a8 100%);
+  --color-heading:#F8f8f8;
   --color-body: #d6d6d6;
   --color-dark:#1d1d1d;
   --color-text-1:#DEDEDE;
@@ -30218,8 +30218,7 @@ body.tmp-white-version.color-primary-3rd .services-widget.v2 .active-bg {
         }
 
         .gallery-item img {
-            width: 100%;
-            height: 100%;
+           
             object-fit: cover;
             border-radius: 20px;
         }
@@ -30698,4 +30697,12 @@ body.tmp-white-version.color-primary-3rd .services-widget.v2 .active-bg {
             .view-content {
                 min-height: 100px;
             }
+        }
+
+
+
+
+
+        .im{
+          padding: 10px;
         }
