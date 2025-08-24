@@ -93,7 +93,7 @@
             line-height: 1.6;
         }
 
-        /* Image Gallery */
+        /* Image Gallery - Updated for responsive images */
         .gallery {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -108,11 +108,21 @@
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             transition: all 0.3s ease;
+            border: 1px solid #333;
+            /* Removed fixed height to allow dynamic sizing */
+        }
+
+        /* For image items - let them size based on content */
+        .gallery-item.image-item {
+            height: auto;
+        }
+
+        /* For placeholder items - keep minimum height */
+        .gallery-item.placeholder-item {
             height: 250px;
             display: flex;
             align-items: center;
             justify-content: center;
-            border: 1px solid #333;
         }
 
         .gallery-item:hover {
@@ -131,16 +141,29 @@
             background: linear-gradient(45deg, #667eea, #764ba2);
             opacity: 0.1;
             transition: opacity 0.3s ease;
+            z-index: 1;
         }
 
         .gallery-item:hover::before {
             opacity: 0.2;
         }
 
+        /* Image styling for responsive behavior */
+        .gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+        }
+
         .gallery-placeholder {
             text-align: center;
             color: #ccc;
             font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
         }
 
         .gallery-placeholder i {
@@ -158,6 +181,8 @@
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
         }
 
         .upload-area:hover {
@@ -173,6 +198,41 @@
         .upload-area p {
             color: #ccc;
             margin-bottom: 1rem;
+        }
+
+        /* Masonry-like layout for better image fitting */
+        @supports (grid-template-rows: masonry) {
+            .gallery {
+                grid-template-rows: masonry;
+            }
+        }
+
+        /* Alternative masonry-like effect using columns for browsers that don't support masonry */
+        @media (min-width: 768px) {
+            .gallery-masonry {
+                column-count: 3;
+                column-gap: 2rem;
+                column-fill: balance;
+            }
+            
+            .gallery-masonry .gallery-item {
+                break-inside: avoid;
+                margin-bottom: 2rem;
+                display: inline-block;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 1024px) {
+            .gallery-masonry {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-masonry {
+                column-count: 1;
+            }
         }
 
         /* Animations */
@@ -226,285 +286,77 @@
                 <h2>My Portfolio</h2>
             </div>
 
-            <div class="gallery">
-                <!-- Upload Area -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                       <img src="./assets/images/Photography/1.jpg"  alt="">
-                    </div>
+            <!-- Toggle between grid and masonry layout -->
+            
+
+            <div class="gallery" id="mainGallery">
+                <!-- Sample image - this will now adapt to its natural size -->
+                <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/1.jpg" alt="Sample Photography 1">
+                </div>
+                 <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/2.jpg" alt="Sample Photography 1">
+                </div>
+                 <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/3.jpg" alt="Sample Photography 1">
                 </div>
 
-                <!-- Sample Portfolio Items -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
+                <!-- More sample images with different aspect ratios -->
+               <div class="gallery-item placeholder-item">
+                      <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/11.jpg" alt="Sample Photography 1">
+                </div>
                 </div>
 
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-camera"></span>
-                        <div>Photography Collection</div>
-                        <small>Portrait & Landscape</small>
-                    </div>
+                 <div class="gallery-item placeholder-item">
+                      <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/4.jpg" alt="Sample Photography 1">
+                </div>
+                    
+                </div>
+                 <div class="gallery-item placeholder-item">
+                       <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/5.jpeg" alt="Sample Photography 1">
+                </div>
                 </div>
 
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-code"></span>
-                        <div>Web Development</div>
-                        <small>Modern & Responsive</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-image"></span>
-                        <div>Digital Art</div>
-                        <small>Illustrations & Graphics</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>UI/UX Design</div>
-                        <small>User Experience Focus</small>
-                    </div>
-                </div>
-            </div>
-              <div class="gallery">
-                <!-- Upload Area -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
-                </div>
-
-                <!-- Sample Portfolio Items -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-camera"></span>
-                        <div>Photography Collection</div>
-                        <small>Portrait & Landscape</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-code"></span>
-                        <div>Web Development</div>
-                        <small>Modern & Responsive</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-image"></span>
-                        <div>Digital Art</div>
-                        <small>Illustrations & Graphics</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>UI/UX Design</div>
-                        <small>User Experience Focus</small>
-                    </div>
-                </div>
-            </div>
-   <div class="gallery">
-                <!-- Upload Area -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
-                </div>
-
-                <!-- Sample Portfolio Items -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-camera"></span>
-                        <div>Photography Collection</div>
-                        <small>Portrait & Landscape</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-code"></span>
-                        <div>Web Development</div>
-                        <small>Modern & Responsive</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-image"></span>
-                        <div>Digital Art</div>
-                        <small>Illustrations & Graphics</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>UI/UX Design</div>
-                        <small>User Experience Focus</small>
-                    </div>
-                </div>
-            </div>
-               <div class="gallery">
-                <!-- Upload Area -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
-                </div>
-
-                <!-- Sample Portfolio Items -->
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>Creative Design Project</div>
-                        <small>Visual Identity & Branding</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-camera"></span>
-                        <div>Photography Collection</div>
-                        <small>Portrait & Landscape</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-code"></span>
-                        <div>Web Development</div>
-                        <small>Modern & Responsive</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-image"></span>
-                        <div>Digital Art</div>
-                        <small>Illustrations & Graphics</small>
-                    </div>
-                </div>
-
-                <div class="gallery-item">
-                    <div class="gallery-placeholder">
-                        <span class="icon-design"></span>
-                        <div>UI/UX Design</div>
-                        <small>User Experience Focus</small>
-                    </div>
-                </div>
-            </div>
 
 
-         </div>
+
+
+                  <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/6.jpeg" alt="Sample Photography 1">
+                </div>
+                 <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/7.jpeg" alt="Sample Photography 1">
+                </div>
+                 <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/8.jpg" alt="Sample Photography 1">
+                </div>
+
+                <!-- Placeholder items -->
+                <div class="gallery-item placeholder-item">
+                      <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/6.jpeg" alt="Sample Photography 1">
+                </div>
+                </div>
+                    <div class="gallery-item placeholder-item">
+                      <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/7.jpeg" alt="Sample Photography 1">
+                </div>
+                </div>
+                 <div class="gallery-item placeholder-item">
+                      <div class="gallery-item image-item">
+                    <img src="./assets/images/Photography/8.jpg" alt="Sample Photography 1">
+                </div>
+                 </div>
+            
+
+ 
+
+
     </section>
 
-    <!-- Footer -->
-    
-
-    <script>
-        // Set current year
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-        // Smooth scrolling for navigation links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Fade in animation on scroll
-        const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in').forEach(el => {
-            observer.observe(el);
-        });
-
-        // Handle image upload
-        function handleImageUpload(event) {
-            const files = event.target.files;
-            const gallery = document.querySelector('.gallery');
-            
-            for (let file of files) {
-                if (file.type.startsWith('image/')) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        const galleryItem = document.createElement('div');
-                        galleryItem.className = 'gallery-item';
-                        galleryItem.innerHTML = `
-                            <img src="${e.target.result}" alt="Portfolio Image" 
-                                 style="width: 100%; height: 100%; object-fit: cover; border-radius: 15px;">
-                        `;
-                        gallery.appendChild(galleryItem);
-                    };
-                    reader.readAsDataURL(file);
-                }
-            }
-        }
-
-        // Header scroll effect
-        window.addEventListener('scroll', () => {
-            const header = document.querySelector('.header');
-            if (window.scrollY > 100) {
-                header.style.background = '#0D0D0D';
-                header.style.boxShadow = '0 2px 20px #0D0D0D';
-            } else {
-                header.style.background = '#0D0D0D';
-                header.style.boxShadow = 'none';
-            }
-        });
-    </script>
+   
 </body>
 </html>

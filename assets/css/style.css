@@ -67,7 +67,7 @@
   --color-secondary: #010a10;
   --color-white:#ffffff;
   --color-gray: #bebebe;
-  --color-gray-2: #a8a8a8;
+  --color-gray-2: #111111;
   --color-subtitle: #f9004d;
   --stroke-dark-100: #081722;
   --background-color-1: #24243557;
@@ -79,16 +79,19 @@
   --color-card: #06131b;
   --gradient-box: linear-gradient(to right, var(--color-primary), #FF014F);
   --gradient-one: linear-gradient(to right bottom, #E42032, #1273EB);
-  --gradient-two: linear-gradient(to right, #ED145B, #4A11EB);
+  --gradient-two: linear-gradient(to right, #8fed14, #4A11EB);
   --gradient-three: linear-gradient(to right, #03041c, #0612b3);
   --text-gradient-one:linear-gradient(to right, #E42032, #4A11EB);
   --stroke-gr: linear-gradient(317deg, #dcdcdc 0%, #dcdcdc, rgb(211, 211, 211) 62.96%, #4d3d3d 100%);
   --stroke-gradient-2: radial-gradient(92.46% 222.14% at 15.65% -7.58%, rgba(127, 226, 251, 0.20) 0%, rgba(127, 226, 251, 0.02) 100%);
-  --icon-gradient: linear-gradient(315deg, #13fdfd 0%, #139bfd 100%);
+  --icon-gradient: linear-gradient(315deg, #0024ee 0%, #000000 100%); 
+  --icon-gradientt: linear-gradient(315deg, #ff0000 0%, #000000 100%); 
+
+ 
   --gradient-none: linear-gradient(red 0 0);
   --full: linear-gradient(red 0 0);
   --shadow-1: 0 2px 22px #13fdfd7d;
-  --theme-gradient: linear-gradient(312deg, #3f3f3f 0%, #a8a8a8 100%);
+  --theme-gradient: linear-gradient(312deg, #a8a8a8 0%, #3f3f3f 100%);
   --color-heading:#F8f8f8;
   --color-body: #d6d6d6;
   --color-dark:#1d1d1d;
@@ -14365,6 +14368,13 @@ header.header-full-width.header--sticky.sticky {
   transition: 0.3s;
   border-radius: 100%;
 }
+
+
+
+
+
+
+
 .profile-image-1-personal-left-fixed .social-default li a:hover::after {
   transform: scale(1);
   opacity: 1;
@@ -15262,6 +15272,12 @@ Section Head
   transition: all 0.4s ease;
   z-index: -1;
 }
+
+
+
+
+
+
 .social-link a:hover {
   color: #ffffff;
 }

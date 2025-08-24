@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saed Govar - Video Portfolio</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0D0D0D;
+            color: #0D0D0D;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: #0D0D0D;
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s ease;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .nav {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav a:hover {
+            color: #667eea;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 8rem 0 5rem 0;
+            background: #0D0D0D;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            font-size: 2.5rem;
+            color: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            font-size: 1.1rem;
+            color: #ccc;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* Video Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            background: #1a1a1a;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+            border: 1px solid #333;
+        }
+
+        /* For video items - let them size based on content */
+        .gallery-item.video-item {
+            height: auto;
+        }
+
+        /* For placeholder items - keep minimum height */
+        .gallery-item.placeholder-item {
+            height: 250px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .gallery-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.7);
+            border-color: #667eea;
+        }
+
+        .gallery-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            opacity: 0.1;
+            transition: opacity 0.3s ease;
+            z-index: 1;
+        }
+
+        .gallery-item:hover::before {
+            opacity: 0.2;
+        }
+
+        /* Video styling for responsive behavior */
+        .gallery-item video {
+            width: 100%;
+            height: auto;
+            display: block;
+            border-radius: 15px;
+            position: relative;
+            z-index: 2;
+            background: #000;
+        }
+
+        /* Video container for aspect ratio preservation */
+        .video-container {
+            position: relative;
+            width: 100%;
+            background: #000;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        /* Video overlay with play button and info */
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.7) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 1rem;
+            z-index: 3;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+
+        .gallery-item:hover .video-overlay {
+            opacity: 1;
+        }
+
+        .play-button {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60px;
+            height: 60px;
+            background: rgba(102, 126, 234, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            pointer-events: all;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: rgba(102, 126, 234, 1);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .play-button::after {
+            content: '▶';
+            color: white;
+            font-size: 20px;
+            margin-left: 3px;
+        }
+
+        .video-info {
+            align-self: flex-end;
+            color: white;
+            text-align: right;
+        }
+
+        .video-title {
+            font-weight: bold;
+            margin-bottom: 0.25rem;
+        }
+
+        .video-duration {
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        /* Placeholder styling */
+        .gallery-placeholder {
+            text-align: center;
+            color: #ccc;
+            font-size: 1.1rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .gallery-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        /* Upload Area */
+        .upload-area {
+            background: linear-gradient(135deg, #2a2a2a, #1a1a1a);
+            border: 2px dashed #667eea;
+            border-radius: 15px;
+            padding: 3rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+
+        .upload-area:hover {
+            background: linear-gradient(135deg, #333, #2a2a2a);
+            border-color: #764ba2;
+        }
+
+        .upload-area h3 {
+            color: #667eea;
+            margin-bottom: 1rem;
+        }
+
+        .upload-area p {
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+
+        /* Loading spinner for videos */
+        .video-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #333;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Masonry-like layout for better mixed content fitting */
+        @supports (grid-template-rows: masonry) {
+            .gallery {
+                grid-template-rows: masonry;
+            }
+        }
+
+        @media (min-width: 768px) {
+            .gallery-masonry {
+                column-count: 3;
+                column-gap: 2rem;
+                column-fill: balance;
+            }
+            
+            .gallery-masonry .gallery-item {
+                break-inside: avoid;
+                margin-bottom: 2rem;
+                display: inline-block;
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 1024px) and (min-width: 769px) {
+            .gallery-masonry {
+                column-count: 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .gallery-masonry {
+                column-count: 1;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
+            
+            .gallery.flex-layout {
+                justify-content: center;
+            }
+            
+            .gallery.flex-layout .gallery-item {
+                flex: 1 1 100%;
+                max-width: 500px;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                display: none;
+            }
+
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            
+            .gallery.flex-layout {
+                justify-content: center;
+            }
+            
+            .gallery.flex-layout .gallery-item {
+                flex: 1 1 100%;
+                max-width: 500px;
+            }
+            
+            /* Mobile: Make portrait videos smaller */
+            .gallery-item[data-category="portrait"] {
+                grid-row: span 1;
+            }
+            
+            .gallery-item[data-category="portrait"] .video-container {
+                max-height: 350px;
+            }
+        }
+
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            }
+        }
+
+        @media (min-width: 1025px) {
+            .gallery {
+                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            }
+            
+            /* Desktop: Allow portrait videos to span more */
+            .gallery .gallery-item[data-category="portrait"] {
+                grid-row: span 2;
+            }
+        }
+
+        /* Custom Icons */
+        .icon-video::before { content: "🎥"; }
+        .icon-film::before { content: "🎬"; }
+        .icon-camera::before { content: "📹"; }
+        .icon-edit::before { content: "✂️"; }
+        .icon-stream::before { content: "📡"; }
+
+        /* Section buttons styling */
+        .section-btn:hover {
+            background: #667eea !important;
+            color: white !important;
+        }
+
+        .section-btn.active {
+            background: #667eea !important;
+            color: white !important;
+        }
+
+        /* Portrait-specific styling - Updated */
+        .gallery-item[data-category="portrait"] {
+            min-height: 350px;
+        }
+
+        .gallery-item[data-category="portrait"] .video-container {
+            min-height: 350px;
+        }
+
+        /* Square-specific styling - Updated */
+        .gallery-item[data-category="square"] {
+            min-height: 280px;
+            max-height: 320px;
+        }
+
+        .gallery-item[data-category="square"] .video-container {
+            height: 280px;
+        }
+
+        /* Landscape-specific styling */
+        .gallery-item[data-category="landscape"] {
+            min-height: 200px;
+        }
+
+        /* Video controls styling */
+        .gallery-item video::-webkit-media-controls {
+            border-radius: 0 0 15px 15px;
+        }
+
+        /* Full screen video modal */
+        .video-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 9999;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .video-modal.active {
+            display: flex;
+        }
+
+        .modal-video {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            cursor: pointer;
+            z-index: 10000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <a href="./index.html"><div class="logo">Saed Govar</div></a>
+            <nav class="nav">
+             </nav>
+        </div>
+    </header>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="section-title fade-in">
+                <h2>Video Portfolio</h2>
+                <p>A collection of creative video projects showcasing different styles and techniques</p>
+                <div style="font-size: 0.9rem; color: #999; margin-top: 1rem;">
+                    <span id="layoutDescription">Grid Layout: Optimized spacing for mixed aspect ratios</span>
+                </div>
+            </div>
+
+            <!-- Section Navigation -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <div style="display: inline-flex; background: #1a1a1a; border-radius: 10px; padding: 5px; gap: 5px;">
+                    <button onclick="showSection('all')" id="allBtn" class="section-btn active" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">All</button>
+                    <button onclick="showSection('landscape')" id="landscapeBtn" class="section-btn" style="background: transparent; color: #ccc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">Landscape</button>
+                    <button onclick="showSection('portrait')" id="portraitBtn" class="section-btn" style="background: transparent; color: #ccc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">Portrait</button>
+                    <button onclick="showSection('square')" id="squareBtn" class="section-btn" style="background: transparent; color: #ccc; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; transition: all 0.3s ease;">Square</button>
+                </div>
+            </div>
+
+            <!-- Layout Toggle -->
+            <div style="text-align: center; margin-bottom: 2rem;">
+                <button onclick="toggleLayout()" id="layoutToggle" style="background: #667eea; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; margin-right: 1rem;">Switch to Flex Layout</button>
+                <button onclick="toggleAutoplay()" id="autoplayToggle" style="background: #764ba2; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">Enable Autoplay</button>
+            </div>
+
+            <div class="gallery" id="mainGallery">
+                <!-- LANDSCAPE VIDEOS -->
+                <!-- Sample Video 1 - Landscape -->
+                <div class="gallery-item video-item" data-category="landscape" data-title="Nature Documentary" data-duration="2:30">
+                    <div class="video-container">
+                        <video preload="metadata" muted>
+                            <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_1mb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button" onclick="playVideo(this)"></div>
+                            <div class="video-info">
+                                <div class="video-title">Nature Documentary</div>
+                                <div class="video-duration">2:30</div>
+                            </div>
+                        </div>
+                        <div class="video-loading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item placeholder-item" data-category="landscape">
+                    <div class="gallery-placeholder">
+                        <span class="icon-video"></span>
+                        <div>Corporate Video</div>
+                        <small>Brand Storytelling</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item placeholder-item" data-category="landscape">
+                    <div class="gallery-placeholder">
+                        <span class="icon-film"></span>
+                        <div>Short Film</div>
+                        <small>Narrative & Drama</small>
+                    </div>
+                </div>
+
+                <!-- PORTRAIT VIDEOS -->
+                <!-- Portrait Video 1 -->
+                <div class="gallery-item video-item" data-category="portrait" data-title="Portrait Interview" data-duration="3:15">
+                    <div class="video-container" style="aspect-ratio: 9/16;">
+                        <video preload="metadata" muted style="object-fit: cover; height: 100%;">
+                            <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_640x360_1mb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button" onclick="playVideo(this)"></div>
+                            <div class="video-info">
+                                <div class="video-title">Portrait Interview</div>
+                                <div class="video-duration">3:15</div>
+                            </div>
+                        </div>
+                        <div class="video-loading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portrait Placeholder 1 -->
+                <div class="gallery-item placeholder-item" data-category="portrait" style="aspect-ratio: 9/16;">
+                    <div class="gallery-placeholder">
+                        <span class="icon-camera" style="font-size: 2.5rem;"></span>
+                        <div>Personal Portrait</div>
+                        <small>Character Study</small>
+                    </div>
+                </div>
+
+                <!-- Portrait Video 2 -->
+                <div class="gallery-item video-item" data-category="portrait" data-title="Fashion Portrait" data-duration="1:20">
+                    <div class="video-container" style="aspect-ratio: 9/16;">
+                        <video preload="metadata" muted style="object-fit: cover; height: 100%;">
+                            <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button" onclick="playVideo(this)"></div>
+                            <div class="video-info">
+                                <div class="video-title">Fashion Portrait</div>
+                                <div class="video-duration">1:20</div>
+                            </div>
+                        </div>
+                        <div class="video-loading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Portrait Placeholder 2 -->
+                <div class="gallery-item placeholder-item" data-category="portrait" style="aspect-ratio: 3/4;">
+                    <div class="gallery-placeholder">
+                        <span style="font-size: 2.5rem;">👤</span>
+                        <div>Business Portrait</div>
+                        <small>Professional Headshots</small>
+                    </div>
+                </div>
+
+                <!-- Portrait Placeholder 3 -->
+                <div class="gallery-item placeholder-item" data-category="portrait" style="aspect-ratio: 9/16;">
+                    <div class="gallery-placeholder">
+                        <span style="font-size: 2.5rem;">🎭</span>
+                        <div>Artistic Portrait</div>
+                        <small>Creative Expression</small>
+                    </div>
+                </div>
+
+                <!-- Portrait Placeholder 4 -->
+                <div class="gallery-item placeholder-item" data-category="portrait" style="aspect-ratio: 2/3;">
+                    <div class="gallery-placeholder">
+                        <span style="font-size: 2.5rem;">📸</span>
+                        <div>Studio Portrait</div>
+                        <small>Controlled Lighting</small>
+                    </div>
+                </div>
+
+                <!-- SQUARE VIDEOS -->
+                <!-- Sample Video 3 - Square -->
+                <div class="gallery-item video-item" data-category="square" data-title="Social Media Content" data-duration="0:30">
+                    <div class="video-container" style="aspect-ratio: 1/1;">
+                        <video preload="metadata" muted style="object-fit: cover;">
+                            <source src="https://sample-videos.com/zip/10/mp4/SampleVideo_1280x720_2mb.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                        <div class="video-overlay">
+                            <div class="play-button" onclick="playVideo(this)"></div>
+                            <div class="video-info">
+                                <div class="video-title">Social Media Content</div>
+                                <div class="video-duration">0:30</div>
+                            </div>
+                        </div>
+                        <div class="video-loading" style="display: none;">
+                            <div class="spinner"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="gallery-item placeholder-item" data-category="square" style="aspect-ratio: 1/1;">
+                    <div class="gallery-placeholder">
+                        <span class="icon-camera"></span>
+                        <div>Instagram Content</div>
+                        <small>Social Media</small>
+                    </div>
+                </div>
+
+                <!-- GENERAL ITEMS -->
+                <div class="gallery-item placeholder-item" data-category="landscape">
+                    <div class="gallery-placeholder">
+                        <span class="icon-edit"></span>
+                        <div>Motion Graphics</div>
+                        <small>Animation & VFX</small>
+                    </div>
+                </div>
+
+                <div class="gallery-item placeholder-item" data-category="landscape">
+                    <div class="gallery-placeholder">
+                        <span class="icon-stream"></span>
+                        <div>Live Streaming</div>
+                        <small>Real-time Production</small>
+                    </div>
+                </div>
+
+                <!-- Upload area -->
+                <div class="gallery-item placeholder-item" data-category="all">
+                    <div class="upload-area" onclick="document.getElementById('videoUpload').click()">
+                        <h3>Upload Your Videos</h3>
+                        <p>Click here to add your video portfolio</p>
+                        <small>Supports: MP4, WebM, AVI, MOV</small>
+                    </div>
+                    <input type="file" id="videoUpload" multiple accept="video/*" style="display: none;" onchange="handleVideoUpload(event)">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Video Modal -->
+    <div class="video-modal" id="videoModal">
+        <span class="close-modal" onclick="closeVideoModal()">&times;</span>
+        <video class="modal-video" id="modalVideo" controls>
+            <source src="" type="video/mp4">
+        </video>
+    </div>
+
+    <script>
+        let isMasonryLayout = false;
+        let autoplayEnabled = false;
+        let currentSection = 'all';
+
+        function showSection(section) {
+            currentSection = section;
+            const items = document.querySelectorAll('.gallery-item');
+            const buttons = document.querySelectorAll('.section-btn');
+            
+            // Update button states
+            buttons.forEach(btn => {
+                btn.style.background = 'transparent';
+                btn.style.color = '#ccc';
+                btn.classList.remove('active');
+            });
+            
+            document.getElementById(section + 'Btn').style.background = '#667eea';
+            document.getElementById(section + 'Btn').style.color = 'white';
+            document.getElementById(section + 'Btn').classList.add('active');
+            
+            // Filter items
+            items.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (section === 'all' || category === section || category === 'all') {
+                    item.style.display = 'block';
+                    item.style.animation = 'fadeInUp 0.6s ease forwards';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        function toggleLayout() {
+            const gallery = document.getElementById('mainGallery');
+            const toggleButton = document.getElementById('layoutToggle');
+            
+            if (!isMasonryLayout) {
+                gallery.className = 'gallery-masonry';
+                toggleButton.textContent = 'Switch to Grid Layout';
+                isMasonryLayout = true;
+            } else {
+                gallery.className = 'gallery';
+                toggleButton.textContent = 'Switch to Masonry Layout';
+                isMasonryLayout = false;
+            }
+        }
+
+        function toggleAutoplay() {
+            const toggleButton = document.getElementById('autoplayToggle');
+            const videos = document.querySelectorAll('.gallery-item video');
+            
+            autoplayEnabled = !autoplayEnabled;
+            
+            if (autoplayEnabled) {
+                toggleButton.textContent = 'Disable Autoplay';
+                videos.forEach(video => {
+                    video.setAttribute('autoplay', '');
+                    video.setAttribute('loop', '');
+                });
+            } else {
+                toggleButton.textContent = 'Enable Autoplay';
+                videos.forEach(video => {
+                    video.removeAttribute('autoplay');
+                    video.removeAttribute('loop');
+                    video.pause();
+                });
+            }
+        }
+
+        function playVideo(playButton) {
+            const videoContainer = playButton.closest('.video-container');
+            const video = videoContainer.querySelector('video');
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            // Copy video source to modal
+            modalVideo.src = video.querySelector('source').src;
+            modal.classList.add('active');
+            modalVideo.play();
+        }
+
+        function closeVideoModal() {
+            const modal = document.getElementById('videoModal');
+            const modalVideo = document.getElementById('modalVideo');
+            
+            modal.classList.remove('active');
+            modalVideo.pause();
+            modalVideo.src = '';
+        }
+
+        // Handle video upload with responsive sizing and categorization
+        function handleVideoUpload(event) {
+            const files = event.target.files;
+            const gallery = document.getElementById('mainGallery');
+            
+            for (let file of files) {
+                if (file.type.startsWith('video/')) {
+                    const url = URL.createObjectURL(file);
+                    
+                    // Create temporary video to get dimensions
+                    const tempVideo = document.createElement('video');
+                    tempVideo.src = url;
+                    
+                    tempVideo.addEventListener('loadedmetadata', function() {
+                        const aspectRatio = this.videoWidth / this.videoHeight;
+                        let category = 'landscape';
+                        let containerStyle = '';
+                        
+                        // Determine category based on aspect ratio
+                        if (aspectRatio < 0.8) {
+                            category = 'portrait';
+                            containerStyle = 'aspect-ratio: 9/16; min-height: 400px;';
+                        } else if (aspectRatio > 1.2) {
+                            category = 'landscape';
+                            containerStyle = '';
+                        } else {
+                            category = 'square';
+                            containerStyle = 'aspect-ratio: 1/1; height: 300px;';
+                        }
+                        
+                        const galleryItem = document.createElement('div');
+                        galleryItem.className = 'gallery-item video-item';
+                        galleryItem.setAttribute('data-category', category);
+                        galleryItem.innerHTML = `
+                            <div class="video-container" style="${containerStyle}">
+                                <video preload="metadata" muted style="object-fit: cover; ${category === 'portrait' ? 'height: 100%;' : ''}">
+                                    <source src="${url}" type="${file.type}">
+                                    Your browser does not support the video tag.
+                                </video>
+                                <div class="video-overlay">
+                                    <div class="play-button" onclick="playVideo(this)"></div>
+                                    <div class="video-info">
+                                        <div class="video-title">${file.name}</div>
+                                        <div class="video-duration">--:--</div>
+                                        <div style="font-size: 0.8rem; opacity: 0.7; margin-top: 0.25rem;">${category.charAt(0).toUpperCase() + category.slice(1)}</div>
+                                    </div>
+                                </div>
+                                <div class="video-loading">
+                                    <div class="spinner"></div>
+                                </div>
+                            </div>
+                        `;
+                        
+                        const video = galleryItem.querySelector('video');
+                        const loading = galleryItem.querySelector('.video-loading');
+                        const durationElement = galleryItem.querySelector('.video-duration');
+                        
+                        // Show loading
+                        loading.style.display = 'block';
+                        
+                        video.addEventListener('loadedmetadata', function() {
+                            loading.style.display = 'none';
+                            const duration = Math.floor(video.duration);
+                            const minutes = Math.floor(duration / 60);
+                            const seconds = duration % 60;
+                            durationElement.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+                        });
+                        
+                        galleryItem.style.opacity = '0';
+                        galleryItem.style.transition = 'opacity 0.3s ease';
+                        
+                        // Hide if current filter doesn't match
+                        if (currentSection !== 'all' && currentSection !== category) {
+                            galleryItem.style.display = 'none';
+                        }
+                        
+                        gallery.appendChild(galleryItem);
+                        
+                        // Fade in
+                        setTimeout(() => {
+                            galleryItem.style.opacity = '1';
+                        }, 100);
+                    });
+                }
+            }
+        }
+
+        // Close modal on ESC key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeVideoModal();
+            }
+        });
+
+        // Close modal on background click
+        document.getElementById('videoModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeVideoModal();
+            }
+        });
+
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Fade in animation on scroll
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animation = 'fadeInUp 0.6s ease forwards';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Header scroll effect
+        window.addEventListener('scroll', () => {
+            const header = document.querySelector('.header');
+            if (window.scrollY > 100) {
+                header.style.background = 'rgba(13, 13, 13, 0.95)';
+                header.style.boxShadow = '0 2px 20px rgba(0,0,0,0.3)';
+            } else {
+                header.style.background = '#0D0D0D';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // Initialize video loading states
+        document.addEventListener('DOMContentLoaded', function() {
+            const videos = document.querySelectorAll('.gallery-item video');
+            videos.forEach(video => {
+                const loadingElement = video.parentElement.querySelector('.video-loading');
+                
+                if (video.readyState < 1) {
+                    loadingElement.style.display = 'block';
+                }
+                
+                video.addEventListener('loadedmetadata', function() {
+                    loadingElement.style.display = 'none';
+                });
+                
+                video.addEventListener('error', function() {
+                    loadingElement.style.display = 'none';
+                    console.log('Video failed to load:', video.src);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
